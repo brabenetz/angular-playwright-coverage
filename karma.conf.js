@@ -23,11 +23,13 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/angular-playwright-coverage'),
+      dir: require('path').join(__dirname, 'coverage', 'karma'),
       subdir: '.',
       reporters: [
+        { type: 'lcovonly', subdir: '.', file: 'coverage-karma.lcov.info'}, // not realy needed. generated after merge with playwright
         { type: 'html' },
-        { type: 'text-summary' }
+        { type: 'json', subdir: '.', file: 'coverage-karma.json'}, // used for merge with playwright-coverage
+        { type: 'text-summary' },
       ]
     },
     reporters: ['progress', 'kjhtml'],
