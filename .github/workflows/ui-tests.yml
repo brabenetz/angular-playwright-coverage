@@ -1,0 +1,44 @@
+name: UI Tests
+on:
+  push:
+    branches: [ '**' ] # Alle Branches
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Timezone
+      run: date
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22.17.1'
+    - name: Install dependencies
+      run: npm ci
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Karma tests
+      run: npm run test
+    - name: Run Playwright tests
+      run: npx playwright test
+    - name: Upload Playwright Test-Reports
+      uses: actions/upload-artifact@v4  # use v3 prevents GHESNotSupportedError: upload-artifact@v4+ are not currently supported on GHES.
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+    - name: Upload Playwright Coverage
+      uses: actions/upload-artifact@v4  # use v3 prevents GHESNotSupportedError: upload-artifact@v4+ are not currently supported on GHES.
+      if: ${{ !cancelled() }}
+      with:
+        name: coverage-playwright
+        path: coverage/playwright
+        retention-days: 30
+    - name: Upload Karma Coverage
+      uses: actions/upload-artifact@v4  # use v3 prevents GHESNotSupportedError: upload-artifact@v4+ are not currently supported on GHES.
+      if: ${{ !cancelled() }}
+      with:
+        name: coverage-karma
+        path: coverage/karma
+        retention-days: 30
