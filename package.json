@@ -2,6 +2,9 @@
   "name": "angular-playwright-coverage",
   "version": "0.0.0",
   "scripts": {
+    "coverage-collect": "cpr coverage/karma/coverage-karma.json  ./coverage/tmp/coverage-karma.json -o && cpr coverage/playwright/coverage-playright.json ./coverage/tmp/coverage-playright.json -o",
+    "coverage-merge": "nyc report --all --reporter lcovonly --reporter html --reporter text --reporter json --reporter text-summary -t ./coverage/tmp --report-dir coverage/all",
+    "coverage-all": "npm run coverage-collect && npm run coverage-merge",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -44,6 +47,7 @@
     "@playwright/test": "^1.55.0",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^24.5.1",
+    "cpr": "^3.0.1",
     "cross-env": "^10.0.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
@@ -52,6 +56,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "monocart-reporter": "^2.9.21",
+    "nyc": "^17.1.0",
     "typescript": "~5.9.2"
   }
 }

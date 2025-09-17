@@ -21,6 +21,9 @@ jobs:
       run: npm run test
     - name: Run Playwright tests
       run: npx playwright test
+    - name: Merge Karma and Playwright Coverage
+      if: ${{ !cancelled() }}
+      run: npm run coverage-all
     - name: Upload Playwright Test-Reports
       uses: actions/upload-artifact@v4  # use v3 prevents GHESNotSupportedError: upload-artifact@v4+ are not currently supported on GHES.
       if: ${{ !cancelled() }}
@@ -41,4 +44,11 @@ jobs:
       with:
         name: coverage-karma
         path: coverage/karma
+        retention-days: 30
+    - name: Upload merged Coverage
+      uses: actions/upload-artifact@v4  # use v3 prevents GHESNotSupportedError: upload-artifact@v4+ are not currently supported on GHES.
+      if: ${{ !cancelled() }}
+      with:
+        name: coverage-all
+        path: coverage/all
         retention-days: 30
